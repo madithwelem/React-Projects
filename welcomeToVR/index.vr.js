@@ -1,30 +1,53 @@
 import React from "react";
-import { AppRegistry, asset, Pano, View, Box } from "react-vr";
+import { TouchableNativeFeedbackBase } from "react-native";
+import { AppRegistry, asset, Pano, Text, View, VrButton } from "react-vr";
 
-export default class shapes extends React.Component {
+export default class cursorSystem extends React.Component {
+  constructor(){
+    super();
+    this.state={buttonText: "Default Button"}
+  }
+
+  triggerEnter(){
+    this.setState({buttonText: "Mouse Entered"})
+  }
+
+  triggerClick(){
+    this.setState({buttonText: "Button Clicked"})
+  }
+
+  triggerExit(){
+    this.setState({buttonText: "Mouse Exited"})
+  }
+
+  triggerLongClick(){
+    this.setState({buttonText: "Button Long Clicked"})
+  }
+
   render() {
     return (
       <View>
-        <Pano source={asset("white1.jpg")} />
+        <Pano source={asset("chess-world.jpg")} />
 
-        <Box
-          dimWidth={0.35}
-          dimDepth={0.35}
-          dimHeight={0.35}
-          texture={asset("techspaza.jpg")}
-          style={{
-            color: "white",
-            transform: [
-              { translate: [0, 0, -2] },
-              { rotateX: 45 },
-              { rotateY: 50 },
-              { scale: [2, 0.7, 1.5] },
-            ],
-          }}
-        />
+        <VrButton
+        onEnter = {this.triggerEnter.bind(this)}
+        onExit = {this.triggerExit.bind(this)}
+        onClick = {this.triggerClick.bind(this)}
+        onLongClick = {this.triggerLongClick.bind(this)}>
+
+        <Text style = {{
+          fontSize: 0.3,
+          textAlign: 'center',
+          backgroundColor: 'steelblue',
+          transform: [
+            {translate: [-1, 0, -3]}
+          ]
+        }}>{this.state.buttonText}</Text>
+
+      </VrButton>
       </View>
     );
   }
 }
 
-AppRegistry.registerComponent("shapes", () => shapes);
+AppRegistry.registerComponent("shapes", () => cursorSystem);
