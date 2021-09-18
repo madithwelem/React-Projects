@@ -5,13 +5,43 @@ import {
   Pano,
   Text,
   View,
+  VrButton,
 } from 'react-vr';
 
-export default class welcomeToVR extends React.Component {
+export default class welcomeToVR extends React.Component 
+{
+  constructor(props)
+  {
+    super(props);    
+    this.state = 
+    {
+      Txt: "Hello_default",
+      imgSrc: "chess-world.jpg",
+    };
+    this.i=0;
+  }
+  start()
+  {
+    if(this.i%2==0)
+    {
+      this.setState({
+        Txt:"Hello 1",
+        imgSrc: "chess-world.jpg",
+      });
+    }
+    else{
+      this.setState({
+        Txt:"Hello 2",
+        imgSrc: "daisies.jpg"
+      })
+    }
+    this.i++;
+  }
   render() {
     return (
       <View>
-        <Pano source={asset('chess-world.jpg')}/>
+        <Pano source={asset(this.state.imgSrc)}/>
+        <VrButton onClick={() => this.start()}>
         <Text
           style={{
             backgroundColor: '#777879',
@@ -24,8 +54,9 @@ export default class welcomeToVR extends React.Component {
             textAlignVertical: 'center',
             transform: [{translate: [0, 0, -3]}],
           }}>
-          hello
+         {this.state.Txt}
         </Text>
+        </VrButton>
       </View>
     );
   }
