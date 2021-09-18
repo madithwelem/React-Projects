@@ -1,34 +1,30 @@
-import React from 'react';
-import {
-  AppRegistry,
-  asset,
-  Pano,
-  Text,
-  View,
-} from 'react-vr';
+import React from "react";
+import { AppRegistry, asset, Pano, View, Box } from "react-vr";
 
-export default class welcomeToVR extends React.Component {
+export default class shapes extends React.Component {
   render() {
     return (
       <View>
-        <Pano source={asset('chess-world.jpg')}/>
-        <Text
+        <Pano source={asset("white1.jpg")} />
+
+        <Box
+          dimWidth={0.35}
+          dimDepth={0.35}
+          dimHeight={0.35}
+          texture={asset("techspaza.jpg")}
           style={{
-            backgroundColor: '#777879',
-            fontSize: 0.8,
-            fontWeight: '400',
-            layoutOrigin: [0.5, 0.5],
-            paddingLeft: 0.2,
-            paddingRight: 0.2,
-            textAlign: 'center',
-            textAlignVertical: 'center',
-            transform: [{translate: [0, 0, -3]}],
-          }}>
-          hello
-        </Text>
+            color: "white",
+            transform: [
+              { translate: [0, 0, -2] },
+              { rotateX: 45 },
+              { rotateY: 50 },
+              { scale: [2, 0.7, 1.5] },
+            ],
+          }}
+        />
       </View>
     );
   }
-};
+}
 
-AppRegistry.registerComponent('welcomeToVR', () => welcomeToVR);
+AppRegistry.registerComponent("shapes", () => shapes);
