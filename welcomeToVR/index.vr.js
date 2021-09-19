@@ -1,53 +1,61 @@
 import React from "react";
-import { TouchableNativeFeedbackBase } from "react-native";
-import { AppRegistry, asset, Pano, Text, View, VrButton } from "react-vr";
+import { Easing } from "react-native";
+import { AppRegistry, asset, Pano, View, Model, Animated, PointLight } from "react-vr";
 
-export default class cursorSystem extends React.Component {
+export default class ThreeDModel extends React.Component {
+
   constructor(){
     super();
-    this.state={buttonText: "Default Button"}
+    this.state = {
+      animateValue: new Animated.Value(0)
+    };
   }
 
-  triggerEnter(){
-    this.setState({buttonText: "Mouse Entered"})
+  componentDidMount(){
+    this.rotate();
   }
 
-  triggerClick(){
-    this.setState({buttonText: "Button Clicked"})
+  rotate(){
+    this.state.animateValue.setValue(0);
+    Animated.timing(
+      this.state.animateValue,
+      {
+        toValue: 360,
+        duration: 2500,
+        easing: Easing.linear,
+      }
+    ).start(() => this.rotate());
   }
 
-  triggerExit(){
-    this.setState({buttonText: "Mouse Exited"})
-  }
 
-  triggerLongClick(){
-    this.setState({buttonText: "Button Long Clicked"})
-  }
+
+
 
   render() {
+    const AnimatedModel = Animated.createAnimatedComponent(Model);
     return (
       <View>
         <Pano source={asset("chess-world.jpg")} />
+        <PointLight style ={{color: 'white', transform: [{translate: [0, 0, 0,]}]}}/>
 
-        <VrButton
-        onEnter = {this.triggerEnter.bind(this)}
-        onExit = {this.triggerExit.bind(this)}
-        onClick = {this.triggerClick.bind(this)}
-        onLongClick = {this.triggerLongClick.bind(this)}>
+        <AnimatedModel
+          source={{
+            obj: asset("boy.obj"),
+            mtl: asset("boy.mtl"),
+          }}
+          lit
+          style={{
+            transform: [
+              { translate: [0, -8, -25] }, 
+              { scale: [1, 1, 1 ]},
+              { rotateY: this.state.animateValue}
+            ]
+          }}
+        />
 
-        <Text style = {{
-          fontSize: 0.3,
-          textAlign: 'center',
-          backgroundColor: 'steelblue',
-          transform: [
-            {translate: [-1, 0, -3]}
-          ]
-        }}>{this.state.buttonText}</Text>
-
-      </VrButton>
       </View>
     );
   }
-}
+};
 
-AppRegistry.registerComponent("shapes", () => cursorSystem);
+AppRegistry.registerComponent("shapes", () => ThreeDModel);
